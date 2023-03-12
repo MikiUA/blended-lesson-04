@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiMailSend } from 'react-icons/bi';
+import { useAddPostMutation } from '../../redux/commentApi';
+import { Loader } from '../Loader/Loader';
 import styles from './Form.module.css';
 
 export const Form = () => {
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
 
-  const onHandleChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-  };
+  // const [addComment,{isLoading,isSuccess}] = useAddPostMutation();
+  const [addComment,{isLoading,isSuccess}] = useAddPostMutation();
+  // console.log(one,two);
+  
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
 
-    setAuthor('');
-    setContent('');
+    addComment({author,content})
   };
-
+  useEffect(()=>{
+    if (isSuccess) setAuthor("");setContent("");
+  },[isSuccess])
+  if (isLoading) return <Loader/>
   return (
     <div className={styles.formWrapper}>
       <form className={styles.form} onSubmit={onHandleSubmit}>
@@ -29,7 +33,7 @@ export const Form = () => {
             name='name'
             className={styles.input}
             value={author}
-            onChange={onHandleChange}
+            onChange={(e)=>setAuthor(e.target.value)}
           />
         </label>
 
@@ -40,13 +44,16 @@ export const Form = () => {
             name='text'
             rows='5'
             value={content}
-            onChange={onHandleChange}
+            onChange={(e)=>setContent(e.target.value)}
           ></textarea>
         </label>
 
         <button className={styles.formBtn}>
-          <BiMailSend className={styles.icon} />
-          Send
+          {isLoading?<Loader/>:
+          (<>
+            <BiMailSend className={styles.icon} />
+            Send
+          </>)}
         </button>
       </form>
     </div>

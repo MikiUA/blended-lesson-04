@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useUpdateCommentCountMutation } from '../../redux/commentApi';
 import styles from './Button.module.css';
 
 export const Button = ({ children, counter, role = 'thumbsUp', id }) => {
@@ -8,9 +9,11 @@ export const Button = ({ children, counter, role = 'thumbsUp', id }) => {
     [styles.thumbsUp]: role === 'thumbsUp',
     [styles.thumbsDown]: role === 'thumbsDown',
   };
+  const [updateCount,]=useUpdateCommentCountMutation();
 
   const onBtnHandleClick = () => {
-    console.log('click');
+    updateCount({id,[role]:counter+1})
+    // console.log('click');
   };
 
   return (

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti';
 import { formatDateToNow } from '../../helpers/formatDateToNow';
 import { Button } from '../Button/Button';
+import DeleteCommentButton from '../Button/DeleteCommentButton';
 
 export const Comment = ({
   createdAt,
@@ -38,6 +39,7 @@ export const Comment = ({
             <Button counter={thumbsDown} role='thumbsDown' id={id}>
               <TiThumbsDown className={styles.icon} />
             </Button>
+            <DeleteCommentButton id={id}/>
           </div>
         </div>
       </div>
